@@ -361,6 +361,7 @@ object {
 	text-decoration: none;
 	text-transform: uppercase;
 	line-height: 50px;
+	letter-spacing: 4px;
 	}
 #main-navigation li:hover ul,
 #main-navigation li.sfHover ul {

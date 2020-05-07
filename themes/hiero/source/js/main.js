@@ -18,11 +18,14 @@
 	var urls = window.location.href;
 	//为什么要从后面往前面遍历？因为首页极有可能是https://xxxxx/,
 	//这样的话肯定能够匹配所有的项
+	
 	for (var i = links.length; i >= 0; i--) {
+		console.log(urls, absolute(links[i]))
 		if(urls.indexOf(absolute(links[i])) != -1){
 			$(links[i]).parent().addClass('current-menu-item current_page_item');
 			//为什么还要设置hasCurrent？因为不排除首页是
 			//https://xxxx/index.html格式的
+			console.log('ok', absolute(links[i]))
 			hasCurrent = true;
 			break;
 		}		
