@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    
+<script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+
+    
+<link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+
+  
+  
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>javascript 事件执行机制 | 吴老狗的小站</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <meta name="keywords" content="js原理" />
+  
+  
+  
+  
+  <meta name="description" content="JavaScript有一个基于事件循环的并发模型，事件循环负责执行代码、收集和处理事件以及执行队列中的子任务。这个模型与其它语言中的模型截然不同，比如 C 和 Java。归根结底还是因为js是一门单线程语言。在此总结一篇关于js事件执行机制的笔记。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Javascript 事件执行机制">
+<meta property="og:url" content="http://wbhfe.com/2020/05/08/Javascript%20%E4%BA%8B%E4%BB%B6%E6%89%A7%E8%A1%8C%E6%9C%BA%E5%88%B6/index.html">
+<meta property="og:site_name" content="吴老狗的小站">
+<meta property="og:description" content="JavaScript有一个基于事件循环的并发模型，事件循环负责执行代码、收集和处理事件以及执行队列中的子任务。这个模型与其它语言中的模型截然不同，比如 C 和 Java。归根结底还是因为js是一门单线程语言。在此总结一篇关于js事件执行机制的笔记。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://wbhfe.com/2020/05/08/gallery/music.jpg">
+<meta property="article:published_time" content="2020-05-08T06:55:55.000Z">
+<meta property="article:modified_time" content="2020-05-08T10:53:17.254Z">
+<meta property="article:author" content="Wu">
+<meta property="article:tag" content="js原理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://wbhfe.com/2020/05/08/gallery/music.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="吴老狗的小站" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/logo_ico.png">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  
+<link rel="stylesheet" href="/css/style.css">
+
+
+  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="/css/hiero.css" >
+  <link rel="stylesheet" href="/css/glyphs.css" >
+  
+    <link rel="stylesheet" href="/css/vdonate.css" >
+  
+
+  <!-- Custom CSS -->
+  
+<link rel="stylesheet" href="/css/my.css">
+
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "首页"; 
+
+  themeMenus["/archives"] = "归档"; 
+
+  themeMenus["/categories"] = "分类"; 
+
+  themeMenus["/tags"] = "标签"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" rel="home" >
+                <img style="margin-bottom: 10px;"  width="124px" height="124px" alt="Hike News" src=" /css/images/logo_title.png">
+              </a>
+            
+              <a href="/" title="吴老狗的小站" rel="home"> 吴老狗的小站 </a>
+          </h1>
+
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/">首页</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/archives">归档</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/categories">分类</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class="" href="/tags">标签</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt="" src="">
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/pose.jpg,https://source.unsplash.com/collection/954550/1920x1080".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Javascript 事件执行机制" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+<div class="article-gallery">
+  <div class="article-gallery-photos">
+    
+      <a class="article-gallery-img fancybox" href="/../gallery/music.jpg" rel="gallery_ck9y4ufgz0000igtd7dk890zo">
+        <img src="/../gallery/music.jpg" itemprop="image">
+      </a>
+    
+  </div>
+</div>
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      Javascript 事件执行机制
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2020/05/08/Javascript%20%E4%BA%8B%E4%BB%B6%E6%89%A7%E8%A1%8C%E6%9C%BA%E5%88%B6/" class="article-date">
+	  <time datetime="2020-05-08T06:55:55.000Z" itemprop="datePublished">五月 8, 2020</time>
+	</a>
+
+      
+	<span id="busuanzi_container_page_pv">
+	  本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+	</span>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>JavaScript有一个基于事件循环的并发模型，事件循环负责执行代码、收集和处理事件以及执行队列中的子任务。这个模型与其它语言中的模型截然不同，比如 C 和 Java。归根结底还是因为js是一门单线程语言。在此总结一篇关于js事件执行机制的笔记。</p>
+<a id="more"></a>
+
+<h2 id="Javascript-事件循环"><a href="#Javascript-事件循环" class="headerlink" title="Javascript 事件循环"></a>Javascript 事件循环</h2><p>Javascript 任务：同步任务 异步任务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">st&#x3D;&gt;start: 任务进入执行栈</span><br><span class="line">e&#x3D;&gt;end: 读取任务队列中的结果，进入主线程执行</span><br><span class="line">cond&#x3D;&gt;condition: 是否是同步任务</span><br><span class="line">op1&#x3D;&gt;operation: 主线程</span><br><span class="line">op2&#x3D;&gt;operation: Event Table</span><br><span class="line">op3&#x3D;&gt;operation: 任务全部执行完毕</span><br><span class="line">op4&#x3D;&gt;operation: Event Queue </span><br><span class="line">io&#x3D;&gt;inputoutput: 注册回调函数 </span><br><span class="line">st-&gt;cond</span><br><span class="line"></span><br><span class="line">cond(yes)-&gt;op1-&gt;op3-&gt;e</span><br><span class="line">cond(no)-&gt;op2-&gt;io-&gt;op4-&gt;e</span><br></pre></td></tr></table></figure>
+
+<p>1、同步和异步任务分别进入不同的执行”场所”，同步的进入主线程，异步的进入 Event Table 并注册函数。<br>2、当指定的事情完成时，Event Table 会将这个函数移入 Event Queue。<br>3、主线程内的任务执行完毕为空，会去 Event Queue 读取对应的函数，进入主线程执行。<br>4、上述过程会不断重复，也就是常说的 Event Loop(事件循环)。</p>
+<h2 id="关于-setTimeout"><a href="#关于-setTimeout" class="headerlink" title="关于 setTimeout"></a>关于 setTimeout</h2><p>有些时候会发现 setTimeout 的延时执行假若只设置为 3 秒，但是实际上等待的时间可能会比 3 秒要长，正是因为同步的单线程任务需要一个个执行，如果执行的时间太久，则会影响 setTimeout 的执行，必须等待主线程内的任务执行完毕才会执行。<br>因此不难解释 setTimeout(fn,0)，它的含义是，指定某个任务在主线程最早可得的空闲时间执行，大意是当主线程执行栈内的同步任务全部执行完成，栈为空就会马上执行。</p>
+<h2 id="关于-setInterval"><a href="#关于-setInterval" class="headerlink" title="关于 setInterval"></a>关于 setInterval</h2><p>和 setTimeout 有相似之处，不过 setInterval 是循环执行。setInterval 会每隔指定的时间将注册的函数放入 Event Queue 中，如果前面的任务耗费的时间太久，那么也同样的需要等待。<br>需要注意的是对于 setInterval(fn, ms)来说，一旦 setInterval 的回调函数 fn 的执行时间超过了延迟时间 ms，那将会完全看不出来有时间间隔。</p>
+<h2 id="Promise与process-nextTick-callback"><a href="#Promise与process-nextTick-callback" class="headerlink" title="Promise与process.nextTick(callback)"></a>Promise与process.nextTick(callback)</h2><p>除了广义的同步任务和异步任务，我们对于任务有着更为精细的定义：</p>
+<p>macro-task(宏任务): 包括整体的代码script、setTimeout、setInterval<br>micro-task(微任务): Promise,process.nextTick  </p>
+<p>不同类型的任务会进入对应的Event Queue，比如说setTimeout和setInterval会进入相同的Event Queue  </p>
+<p>事件循环的顺序决定了js代码的执行顺序。进入整体代码(宏任务)后，开始第一次循环。接着执行所有的微任务，然后再次从宏任务开始，找到其中一个任务队列执行完毕，再执行所有的微任务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">st&#x3D;&gt;start: 宏任务</span><br><span class="line">e&#x3D;&gt;end: 执行所有微任务</span><br><span class="line">op1&#x3D;&gt;operation: 执行结束</span><br><span class="line">op2&#x3D;&gt;operation: 开始新的宏任务</span><br><span class="line">op3&#x3D;&gt;operation: 没有的话，开始新的宏任务</span><br><span class="line">cond&#x3D;&gt;condition: 有可执行的微任务吗(yes or no)</span><br><span class="line"></span><br><span class="line">st-&gt;op1-&gt;cond(yes)-&gt;e-&gt;op2</span><br><span class="line">cond(no)-&gt;op3-&gt;st</span><br></pre></td></tr></table></figure>
+<p>利用一段代码说明这个过程：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'setTimeout'</span>);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'promise'</span>);</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'then'</span>);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'console'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>这段代码作为宏任务，进入主线程。<br>先遇到setTimeout，那么将其回调函数注册后分发到宏任务Event Queue。(注册过程与上同，下文不再描述)<br>接下来遇到了Promise，new Promise立即执行，then函数分发到微任务Event Queue。<br>遇到console.log()，立即执行。<br>好啦，整体代码script作为第一个宏任务执行结束，看看有哪些微任务？我们发现了then在微任务Event Queue里面，执行。<br>ok，第一轮事件循环结束了，我们开始第二轮循环，当然要从宏任务Event Queue开始。我们发现了宏任务Event Queue中setTimeout对应的回调函数，立即执行。<br>结束。  </p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/Javascript/">Javascript</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js%E5%8E%9F%E7%90%86/" rel="tag">js原理</a></li></ul>
+
+      
+        <div id="donation_div"></div>
+
+
+<script src="/js/vdonate.js"></script>
+
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: '打赏支持', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: '',
+  alipayImage: ''
+});
+</script>
+      
+            
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC81MDAxOC8yNjUwOQ==">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+      
+    </footer>
+  </div>
+  
+    
+<!-- <nav id="article-nav">
+  
+    <a href="/2020/05/08/Promise%20%E5%B8%B8%E8%A7%81API%E6%80%BB%E7%BB%93/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">
+        
+          Promise 常见API总结
+        
+      </div>
+    </a>
+  
+  
+</nav> -->
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">文章目录</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Javascript-事件循环"><span class="nav-number">1.</span> <span class="nav-text">Javascript 事件循环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于-setTimeout"><span class="nav-number">2.</span> <span class="nav-text">关于 setTimeout</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于-setInterval"><span class="nav-number">3.</span> <span class="nav-text">关于 setInterval</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Promise与process-nextTick-callback"><span class="nav-number">4.</span> <span class="nav-text">Promise与process.nextTick(callback)</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2020 前端吴老狗的小站
+          
+            <span id="busuanzi_container_site_uv">
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              访客数<span id="busuanzi_value_site_uv"></span>人次
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+              总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+          
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+
+<script src="/js/my.js"></script>
+
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/scripts.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+
+  <!-- <div style="display: none;"> -->
+    <!-- <script type="text/javascript" src="https://s4.cnzz.com/z_stat.php?id=1278881550&web_id=1278881550"></script> -->
+    <!-- <script src="https://s95.cnzz.com/z_stat.php?id=true&web_id=true" language="JavaScript"></script> -->
+  <!-- </div> -->
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/z16.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":false,"scale":0.05},"react":{"opacityDefault":1,"opacityOnHover":0.2},"log":false});</script></body>
+</html>
