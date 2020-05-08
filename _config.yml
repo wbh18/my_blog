@@ -13,7 +13,7 @@ timezone: ''
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
+url: http://wbhfe.com
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -98,7 +98,11 @@ theme: hiero
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type: ''
+  type: git
+  # repo: https://github.com/wbh18/my_blog.git 
+  # branch: site
+  repo: https://github.com/wbh18/wbh18.github.io.git
+  branch: master
 
 # Live2D
 ## https://github.com/EYHN/hexo-helper-live2d
