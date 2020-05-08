@@ -30,18 +30,18 @@
         sectionTitle = CONFIG.TRANSLATION[type];
         switch (type) {
             case 'POSTS':
-            case 'PAGES':
+            // case 'PAGES':
                 $searchItems = array.map(function (item) {
                     // Use config.root instead of permalink to fix url issue
                     return searchItem('file', item.title, null, item.text.slice(0, 150), CONFIG.ROOT_URL + item.path);
                 });
                 break;
-            case 'CATEGORIES':
-            case 'TAGS':
-                $searchItems = array.map(function (item) {
-                    return searchItem(type === 'CATEGORIES' ? 'folder' : 'tag', item.name, item.slug, null, item.permalink);
-                });
-                break;
+            // case 'CATEGORIES':
+            // case 'TAGS':
+            //     $searchItems = array.map(function (item) {
+            //         return searchItem(type === 'CATEGORIES' ? 'folder' : 'tag', item.name, item.slug, null, item.permalink);
+            //     });
+            //     break;
             default:
                 return null;
         }

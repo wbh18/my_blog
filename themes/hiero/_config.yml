@@ -8,7 +8,7 @@ menu:
   Archives: archives
   Categories: categories
   Tags: tags
-  About: about
+  # About: 
 rss: /atom.xml
 
 since: 2020
@@ -17,7 +17,7 @@ since: 2020
 keywords: ""
 
 # Put your favicon.ico into `hexo-site/themes/hiero/source/` directory.
-favicon: css/images/logo.png
+favicon: css/images/logo_ico.png
 
 
 # Put your avatar.jpg into `hexo-site/themes/hiero/source/` directory.
@@ -27,7 +27,7 @@ avatar:
   width: 124
   height: 124
   bottom: 10
-  url: css/images/logo.png
+  url: css/images/logo_title.png
   
 
 # AboutPage background
@@ -54,26 +54,26 @@ fancybox: true
 sidebar: right
 widgets:
 - search
-- social
+# - social
 - recent_posts
 - category
 - tag
-- tagcloud
+# - tagcloud
 - archive
 
 # Social Links
 # Key is the name of FontAwsome icon.
 # Value is the target link (E.g. GitHub: https://github.com/iTimeTraveler)
 social:
-  Github: 
-  Weibo: 
-  Twitter: 
-  Facebook: 
-  Google-plus: 
-  Instagram: 
-  Pinterest: 
-  Flickr: 
-  email:
+  # Github: 
+  # Weibo: 
+  # Twitter: 
+  # Facebook: 
+  # Google-plus: 
+  # Instagram: 
+  # Pinterest: 
+  # Flickr: 
+  # email:
 
 
 # Search
