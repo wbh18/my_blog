@@ -152,4 +152,3 @@ Promise.race([p1, p2, p3]).then(function (value) {
 });
 ```
 生成并返回一个新的promise对象，参数promise数组中的任何一个promise对象如果变为resolve或者reject的话，该函数就会返回，并使用这个promise对象的值进行resolve或者reject
-

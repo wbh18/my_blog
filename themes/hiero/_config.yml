@@ -47,14 +47,14 @@ post_sidebar:
   enable: false
 
 # Content
-fancybox: true
+# fancybox: true
 
 
 # Sidebar
 sidebar: right
 widgets:
 - search
-# - social
+- social
 - recent_posts
 - category
 - tag
@@ -66,7 +66,7 @@ widgets:
 # Key is the name of FontAwsome icon.
 # Value is the target link (E.g. GitHub: https://github.com/iTimeTraveler)
 social:
-  # Github: 
+  Github: https://github.com/wbh18
   # Weibo: 
   # Twitter: 
   # Facebook: 
@@ -74,7 +74,8 @@ social:
   # Instagram: 
   # Pinterest: 
   # Flickr: 
-  # email:
+  email: wbh2333@gmail.com
+  steam: https://steamcommunity.com/profiles/76561198140538091/
 
 
 # Search

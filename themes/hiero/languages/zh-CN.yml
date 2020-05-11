@@ -12,7 +12,7 @@ comment: 留言
 archive_a: 归档
 archive_b: 归档：%s
 page: 第 %d 页
-recent_posts: 最新文章
+recent_posts: 最新日志
 newer: 上一篇
 older: 下一篇
 share: 分享
@@ -20,7 +20,7 @@ theme_by: Theme by
 rss_feed: RSS Feed
 category: Category
 tag: Tag
-connect: '联系我们'
+connect: '来康康'
 post_total_count: 嗯，目前共计%d篇文章
 read_more: '阅读全文'
 contents: 文章目录
