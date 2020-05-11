@@ -4,12 +4,12 @@
 
 # Site
 title: 吴老狗的小站
-subtitle: ''
-description: ''
-keywords:
+subtitle: 吴老狗的个人博客
+description: 吴老狗的个人博客
+keywords: blog,javascript,前端开发,node.js,编程
 author: Wu
 language: zh-CN
-timezone: ''
+timezone: Asia/Shanghai
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
@@ -101,7 +101,8 @@ deploy:
   type: git
   # repo: https://github.com/wbh18/my_blog.git 
   # branch: site
-  repo: https://github.com/wbh18/wbh18.github.io.git
+  # repo: https://github.com/wbh18/wbh18.github.io.git
+  repo: git@129.211.3.208:/home/git/blog.git
   branch: master
 
 # Live2D
@@ -124,7 +125,7 @@ live2d:
     # use: ./wives/wanko # 相对于博客根目录的路径
     # use: https://cdn.jsdelivr.net/npm/live2d-widget-model-wanko@1.0.5/assets/wanko.model.json # 你的自定义 url
   display:
-    position: left
+    position: right
     width: 150
     height: 300
   mobile:

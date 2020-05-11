@@ -4,15 +4,15 @@
   <meta charset="utf-8">
 
   <!-- PACE Progress Bar START -->
-  <% if(theme.progressBar.enable && theme.progressBar.themeCSS){ %>
-    <%- js('https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js') %>
-    <%- css(theme.progressBar.themeCSS) %>
+  <% if(theme.progressBar.enable){ %>
+      <script src="/js/pace.js"></script>
+      <link href="/css/pace.css" rel="stylesheet" />
   <% } %>
-  <% if(theme.progressBar.enable && !theme.progressBar.themeCSS){ %>
+  <!-- <% if(theme.progressBar.enable && !theme.progressBar.themeCSS){ %>
     <script>
       alert('[PACE.js]错误：加载进度条的themeCSS设置可能不正确，请检查主题的_config.yml');
     </script>
-  <% } %>
+  <% } %> -->
 
   <!-- PACE Progress Bar START -->
 
@@ -71,7 +71,7 @@
   <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
   <%- css('css/style') %>
 
-  <%- js('https://code.jquery.com/jquery-3.1.1.min.js') %>
+  <!-- <%- js('https://code.jquery.com/jquery-3.1.1.min.js') %> -->
 
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" >
@@ -80,6 +80,9 @@
   <% if (theme.donate.enable){ %>
     <link rel="stylesheet" href="<%- config.root %>css/vdonate.css" >
   <% } %>
+
+  <!-- 引用Aplayer -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
 
   <!-- Custom CSS -->
   <%- css('css/my.css') %>
@@ -93,4 +96,23 @@
       });
   </script>
   <% } %>
+  <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/jquery.pjax/2.0.1/jquery.pjax.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/meting@1.2.0/dist/Meting.min.js"></script>
+  <script>
+    function isPC(){  
+      var userAgentInfo = navigator.userAgent;
+      var Agents = new Array("Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod");  
+      var flag = true;  
+      for (var v = 0; v < Agents.length; v++) {  
+          if (userAgentInfo.indexOf(Agents[v]) > 0) { flag = false; break; }  
+      }  
+      return flag;  
+    }
+    if (isPC()) {
+      $(document).pjax('a[target!=_blank]', '#container', {fragment:'#container', timeout:8000});
+    }
+  </script>
+  
 </head>

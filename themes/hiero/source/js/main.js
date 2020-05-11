@@ -1,5 +1,4 @@
-(function(){
-
+function onNavClick(){
 	// Highlight current nav item
 	var hasCurrent = false;
 
@@ -15,27 +14,25 @@
 		$(this).removeClass('current-menu-item current_page_item');
 	});
 	var links = $('#main-nav > li > a');
-	var urls = window.location.href;
 	//为什么要从后面往前面遍历？因为首页极有可能是https://xxxxx/,
 	//这样的话肯定能够匹配所有的项
 	
-	for (var i = links.length; i >= 0; i--) {
-		console.log(urls, absolute(links[i]))
-		if(urls.indexOf(absolute(links[i])) != -1){
-			$(links[i]).parent().addClass('current-menu-item current_page_item');
-			//为什么还要设置hasCurrent？因为不排除首页是
-			//https://xxxx/index.html格式的
-			console.log('ok', absolute(links[i]))
-			hasCurrent = true;
-			break;
-		}		
-	}
-
-
-	if (!hasCurrent) {
-		$('#main-nav > li:first').addClass('current-menu-item current_page_item');
-	}
-})();
+	setTimeout(() => {
+		var urls = window.location.href;
+		for (var i = links.length; i >= 0; i--) {
+			if(urls.indexOf(absolute(links[i])) != -1){
+				$(links[i]).parent().addClass('current-menu-item current_page_item');
+				//为什么还要设置hasCurrent？因为不排除首页是
+				//https://xxxx/index.html格式的
+				hasCurrent = true;
+				break;
+			}		
+		}
+		if (!hasCurrent) {
+			$('#main-nav > li:first').addClass('current-menu-item current_page_item');
+		}
+	}, 0)
+}
 
 
 
@@ -58,17 +55,19 @@ if (toc != null) {
 	}
 }
 
-
+onNavClick()
 $('#main-navigation').on('click', function(){
     if ($('#main-navigation').hasClass('main-navigation-open')){
-      $('#main-navigation').removeClass('main-navigation-open');
+	  $('#main-navigation').removeClass('main-navigation-open');
     } else {
-      $('#main-navigation').addClass('main-navigation-open');
+	  $('#main-navigation').addClass('main-navigation-open');
+	}
+  });
+$('#main-nav').on('click', () => (onNavClick()))
+$('#content').on('click', function(){
+    if ($('#main-navigation').hasClass('main-navigation-open')){
+	  $('#main-navigation').removeClass('main-navigation-open');
     }
   });
 
-$('#content').on('click', function(){
-    if ($('#main-navigation').hasClass('main-navigation-open')){
-      $('#main-navigation').removeClass('main-navigation-open');
-    }
-  });
+$('#sidebar a[target!="_blank"]').on('click', () => (onNavClick()))

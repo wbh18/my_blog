@@ -8,7 +8,7 @@ tags:
 	- promise
 	- 异步
 photos:
-	- ../gallery/salt-lake.jpg
+	- /gallery/salt-lake.jpg
 ---
 
 Promise 对象是一个代理对象（代理一个值），被代理的值在Promise对象创建时可能是未知的。它允许你为异步操作的成功和失败分别绑定相应的处理方法（handlers）。 这让异步方法可以像同步方法那样返回值，但并不是立即返回最终执行结果，而是一个能代表未来出现的结果的promise对象。本文是对常见的promise方法的一个记录。

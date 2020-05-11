@@ -28,5 +28,23 @@
 
   <a id="rocket" href="#top" class=""></a>
   <script type="text/javascript" src="/js/totop.js" async=""></script>
+  <div id="my-aplayer"
+      class="aplayer" 
+      data-id="5010430092" 
+      data-server="netease" 
+      data-type="playlist" 
+      data-fixed="true" 
+      data-autoplay="false" 
+      data-order="list" 
+      data-volume="0.55" 
+      data-theme="#cc543a" 
+      data-preload="auto" >
+  </div>
+  <script>
+      if (!isPC()) {
+        $('#my-aplayer').remove()
+      }
+  </script>
 </body>
+
 </html>

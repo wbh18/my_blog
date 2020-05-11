@@ -7,7 +7,7 @@ categories:
 tags:
 	- js原理
 photos:
-	- ../gallery/music.jpg
+	- /gallery/music.jpg
 ---
 
 JavaScript有一个基于事件循环的并发模型，事件循环负责执行代码、收集和处理事件以及执行队列中的子任务。这个模型与其它语言中的模型截然不同，比如 C 和 Java。归根结底还是因为js是一门单线程语言。在此总结一篇关于js事件执行机制的笔记。
