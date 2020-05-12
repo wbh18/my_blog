@@ -75,7 +75,8 @@ social:
   # Pinterest: 
   # Flickr: 
   email: wbh2333@gmail.com
-  steam: https://steamcommunity.com/profiles/76561198140538091/
+  Weixin: 
+  Steam: https://steamcommunity.com/profiles/76561198140538091/
 
 
 # Search
@@ -111,7 +112,7 @@ valine:
 # Available value:
 #    default | normal | night | night eighties | night blue | night bright
 # https://github.com/chriskempson/tomorrow-theme
-highlight_theme: default
+highlight_theme: normal
 
 
 

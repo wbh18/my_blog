@@ -3,3 +3,19 @@ type your custom css here
 在本文件键入您的自定义CSS
 升级主题文件时请注意保护本文件，防止意外覆盖。
 */
+pre {
+    word-break: unset;
+}
+
+#weixin-img {
+    position: absolute;
+    left: 0;
+    top: -80%;
+    display: none;
+    width: 100%;
+    z-index: 2000;
+}
+
+#weixin:hover #weixin-img{
+    display: block;
+}

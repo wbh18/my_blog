@@ -116,12 +116,9 @@
       $(document).on('pjax:complete', function() {
         const url = window.location.href
         onNavClick(url)
-        if (!document.getElementById('toc') && window.addEventListener("scroll", scrollcatelogHandler)) {
-            window.removeEventListener("scroll", scrollcatelogHandler)
-        } else if (document.getElementById('toc') && !window.addEventListener("scroll", scrollcatelogHandler)) {
+        if (document.getElementById('toc')) {
             window.addEventListener("scroll", scrollcatelogHandler)
         }
-        
       })
     }
   </script>

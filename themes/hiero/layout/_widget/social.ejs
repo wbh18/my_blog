@@ -1,15 +1,21 @@
 <% if (theme.social){ %>
-  <div class="widget-wrap">
+  <div class="widget-wrap" style="position: relative;">
     <h3 class="widget-title"><%= __('connect') %></h3>
     <div class="widget widget_athemes_social_icons">
 
     	<ul class="clearfix widget-social-icons">   
     	<% Object.keys(theme.social).forEach(function(key) { %>
-          <% if (key == 'email'){ %>
-            <li><a href="mailto:<%= theme.social[key] %>联系我" title="<%=key.trim()%>" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i></a></li> 
-          <% } else {%>
-     			  <li><a href="<%= theme.social[key] %>" title="<%=key.trim()%>"><i class="fa fa-<%= key.toLowerCase() %>" aria-hidden="true"></i></a></li> 
-          <% }%>
+          	<% if (key == 'email'){ %>
+            	<li><a href="mailto:<%= theme.social[key] %>联系我" title="<%=key.trim()%>" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i></a></li>
+			<% } else if (key == 'Weixin') {%> 
+				<li id="weixin">
+					<a href="<%= theme.social[key] %>" title="<%=key.trim()%>"><i class="fa fa-weixin" aria-hidden="true"></i></a>
+					<img id="weixin-img" src="/css/images/weixin-g.png" alt=""/>
+				</li>
+				
+          	<% } else {%>
+     			<li><a href="<%= theme.social[key] %>" title="<%=key.trim()%>"><i class="fa fa-<%= key.toLowerCase() %>" aria-hidden="true"></i></a></li> 
+          	<% }%>
    		<% }) %>
    		</ul>
 
@@ -24,6 +30,7 @@
 			<li class="widget-si-instagram"><a href="http://instagram.com" title="Instagram"><i class="ico-instagram"></i></a></li>
 		</ul> -->
 
-    </div>
+	</div>
+	
   </div>
 <% } %>
